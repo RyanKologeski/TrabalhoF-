@@ -4,19 +4,21 @@
 #include <string.h>
 #define cont 3
 
-struct prontuario
-{
-    char id[20],nome[60],endereco[50],bairro[30],cidade[30],estado[30],anonasc[30],cpf[12];
-    struct procedimentos;
-};
 struct anamnese
 {
     char tratamento[4],tomando[4],diabetico[4],hipertenso[4],tosse[4],alergia[4];
 };
-struct procedimentos
+struct procedimento
 {
-    int dente[32];
+    int dente;
 };
+struct prontuario
+{
+    char id[20],nome[60],endereco[50],bairro[30],cidade[30],estado[30],anonasc[30],cpf[12];
+    struct anamnese anam;
+    struct procedimento proced;
+};
+
 
 void menuprincipal (void);
 void cadastrarprontuario (void);
@@ -85,30 +87,47 @@ void cadastrarprontuario (void)
 /*Função relacionada a anamnese do paciente, com perguntas referentes a problemas*/
 void anamnese (void)
 {
-    struct anamnese anamnese[cont];
+    struct prontuario pront [cont];
     int i=0;
 
     getchar();
     printf("-------CADASTRAR PRONTUÁRIO - ANAMNESE\n");
-    printf("\nEstá em tratamento médico? "); fgets(anamnese[i].tratamento,4,stdin); getchar();
-    printf("Está tomando medicamento? "); fgets(anamnese[i].tomando,4,stdin); getchar();
-    printf("É diabético? "); fgets(anamnese[i].diabetico,4,stdin); getchar();
-    printf("É hipertenso? "); fgets(anamnese[i].hipertenso,4,stdin); getchar();
-    printf("Tem tosse persistente? "); fgets(anamnese[i].tosse,4,stdin); getchar();
-    printf("Tem algum tipo de alergia? "); fgets(anamnese[i].alergia,4,stdin); getchar();
+    printf("\nEstá em tratamento médico? "); fgets(pront[i].anam.tratamento,4,stdin); getchar();
+    printf("Está tomando medicamento? "); fgets(pront[i].anam.tomando,4,stdin); getchar();
+    printf("É diabético? "); fgets(pront[i].anam.diabetico,4,stdin); getchar();
+    printf("É hipertenso? "); fgets(pront[i].anam.hipertenso,4,stdin); getchar();
+    printf("Tem tosse persistente? "); fgets(pront[i].anam.tosse,4,stdin); getchar();
+    printf("Tem algum tipo de alergia? "); fgets(pront[i].anam.alergia,4,stdin); getchar();
 
     return;
 }
 /*Função que recolhe o número e a(s) operação(ões) realizadas*/
 void procedimentos (void)
 {
-    int dente[32][32]={(11,0),(12,0),(13,0),(14,0),(15,0),(16,0),(17,0),(18,0),(21,0),(22,0),(23,0),(24,0),(25,0),
-    (26,0),(27,0),(28,0),(31,0),(32,0),(33,0),(34,0),(35,0),(36,0),(37,0),(38,0),(41,0),(42,0),(43,0),(44,0),(45,0),
-    (46,0),(47,0),(48,0),};
-    int i,j;
+    struct prontuario pront [cont];
+    struct procedimento proc[32]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    int i,ndente;
 
     printf("-------CADASTRAR PRONTUÁRIO - PROCEDIMENTOS\n");
     printf("\n1- Obturação\n2- Extração");
+
+    /* PODEM APAGAR CASO QUISEREM, ESTOU TENTANDO ACHAR UM JEITO, POIS ESTOU MEIO CONFUSO NESTA PARTE. ASS:RYAN KOLOGESKI
+    TAMBÉM PODEM APAGAR AS STRUCTS DECLARADAS AQUI DENTRO E FAZER DE OUTRO MODO
+    infodente:
+    printf("Informe o número do dente: ");
+    scanf("%d",&ndente);
+
+    if ((ndente>=11 && ndente<=18) || (ndente>=21 && ndente<=28) || (ndente>=31 && ndente<=38) || (ndente>=41 && ndente<=48))
+        goto proced;
+    else
+        goto infodente;
+
+    proced:
+    if (ndente>=11 && ndente<=18)
+    {
+        i = ndente - 11;
+        proc[i]
+    }*/
 
     return;
 }
