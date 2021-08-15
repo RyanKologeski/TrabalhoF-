@@ -7,10 +7,15 @@
 struct prontuario
 {
     char id[20],nome[60],endereco[50],bairro[30],cidade[30],estado[30],anonasc[30],cpf[12];
+    struct procedimentos;
 };
 struct anamnese
 {
     char tratamento[4],tomando[4],diabetico[4],hipertenso[4],tosse[4],alergia[4];
+};
+struct procedimentos
+{
+    int dente[32];
 };
 
 void menuprincipal (void);
