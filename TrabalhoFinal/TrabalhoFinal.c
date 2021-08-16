@@ -104,30 +104,57 @@ void anamnese (void)
 /*Função que recolhe o número e a(s) operação(ões) realizadas*/
 void procedimentos (void)
 {
-    struct prontuario pront [cont];
+    getchar ();
+    /*Não sei se ta certo utilizar essa struct ou se tem que utilizar a que esta dentro da Struct prontuario
+    pra dar bom mais pra frente*/
     struct procedimento proc[32]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    int i,ndente;
+    int i,ndente,opcao;
 
     printf("-------CADASTRAR PRONTUÁRIO - PROCEDIMENTOS\n");
-    printf("\n1- Obturação\n2- Extração");
+    printf("\n1- Obturação\n2- Extração\n");
+    getchar ();
 
-    /* PODEM APAGAR CASO QUISEREM, ESTOU TENTANDO ACHAR UM JEITO, POIS ESTOU MEIO CONFUSO NESTA PARTE. ASS:RYAN KOLOGESKI
-    TAMBÉM PODEM APAGAR AS STRUCTS DECLARADAS AQUI DENTRO E FAZER DE OUTRO MODO
+    printf("\nQual procedimento acima deseja realizar: ");
+    scanf("%d",&opcao);
+
     infodente:
     printf("Informe o número do dente: ");
     scanf("%d",&ndente);
 
-    if ((ndente>=11 && ndente<=18) || (ndente>=21 && ndente<=28) || (ndente>=31 && ndente<=38) || (ndente>=41 && ndente<=48))
-        goto proced;
+    /*Compara se o numero do dente informado está dentro dos valores pré-definidos para os dentes*/
+    if (ndente>=11 && ndente<=18 || ndente>=21 && ndente<=28 || ndente>=31 && ndente<=38 || ndente>=41 && ndente<=48)
+    {
+        goto proced;  /*Se o valor informado para o dente for válido, vai para "proced"*/
+    }
     else
-        goto infodente;
+    {
+        goto infodente;  /*Se o valor não for igual aos pré-definidos para os dentes, volta e pede para informar novamente*/
+    }
 
+    /*Verifica em que "grupo" o valor informado para o dente se encaixa*/
     proced:
     if (ndente>=11 && ndente<=18)
     {
         i = ndente - 11;
-        proc[i]
-    }*/
+        proc[i].dente = opcao;
+        /*printf("%d",i);
+        printf("\nDente 15: %d",proc[i].dente);*/
+    }
+    else if (ndente>=21 && ndente<=28)
+    {
+        i = ndente - 13;
+        proc[i].dente = opcao;
+    }
+    else if (ndente>=31 && ndente<=38)
+    {
+        i = ndente - 15;
+        proc[i].dente = opcao;
+    }
+    else if (ndente>=41 && ndente<=48)
+    {
+        i = ndente - 17;
+        proc[i].dente = opcao;
+    }
 
     return;
 }
