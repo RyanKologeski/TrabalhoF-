@@ -115,7 +115,7 @@ int main ()
 void menuprincipal()
 {
     printf("***************************************************\n");
-    printf("\n        PRONTUÁRIO DIGITAL - CLÍNICA DENTE TECH ");
+    printf("\n        PRONTUÁRIO DIGITAL - CLÍNICA DENTO TECH ");
     printf("\n\n***************************************************");
 
     printf("\n\n-----MENU PRINCIPAL");
