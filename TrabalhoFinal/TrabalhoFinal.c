@@ -2,21 +2,31 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <string.h>
-#define cont 3
 
-void menuprincipal();
-void cadastroprontuario();
+#define cont 3
+#define CADASTRAR 1
+#define CONSULTAR 2
+#define SAIR 3
+
+#define OBTURACAO 1
+#define EXTRACAO 2
+
+
+void controlaFluxo();
+int defineMenu(int menu);
+void limpaConsole();
+
+void menuPrincipal();
+void cadastroProntuario();
 void anamnese();
-void procedimento();
+void procedimentos();
 
 void consultarpront();
-void imprimedados();
-void imprimedados1();
-void imprimedados2();
+void imprimeDados();
 
 struct anamnese
 {
-    char trat[4],med[4],diab[4],hiper[4],tosse[4],alergia[4];
+    char trat[1],med[1],diab[1],hiper[1],tosse[1],alergia[1];
 };
 
 struct procedimento
@@ -36,11 +46,13 @@ struct prontuario pront[cont];
 int cpfvalido=0;
 int encerra=0;
 int loc= -1;
+int i,j,menu,contpront=0;
+
 
 int main ()
 {
     setlocale (LC_ALL,"Portuguese");
-    int i,j,menu,contpront=0;
+    //int i,j,menu,contpront=0;
 
     /*Inicializa o vetor dente com 0*/
     for (i=0;i<cont;i++)
@@ -51,68 +63,70 @@ int main ()
         }
     }
     /*Fim da inicialização do vetor*/
-    system ("cls");
-    menuprincipal:
-    menuprincipal();
-    menu:
-    scanf("%d",&menu);
 
-    if (menu<1 || menu>3)
-        goto menu;
+    limpaConsole();
 
-    switch (menu)
-    {
-    case 1:
-        loc = loc+1;
-        if (loc>2)
-        {
-            system("cls");
-            printf("----------Número máximo de prontuários ja cadastrados----------\n\n");
-            goto menuprincipal;
-        }
-        system ("cls");
-        cadastroprontuario();
-        system ("cls");
-        anamnese();
-        system ("cls");
-        procedimento();
-        system ("cls");
-        contpront = contpront + 1;
-        goto menuprincipal;
-        break;
-
-    case 2:
-        system ("cls");
-        if (contpront==0)
-        {
-        	system ("cls");
-            printf("----------Não há prontuário armazenado----------\n\n");
-            goto menuprincipal;
-        }
-        consultarpront();
-        switch (encerra)
-        {
-        case 1:
-        	system("cls");
-        	printf("\n-----PROGRAMA FINALIZADO-----");
-            exit(0);
-            break;
-
-        default:
-            break;
-        }
-        system ("cls");
-        goto menuprincipal;
-        break;
-    }
-
-	system("cls");
-	printf("\n-----PROGRAMA FINALIZADO-----");
+    controlaFluxo();
 
     return 0;
 }
 
-void menuprincipal()
+void limpaConsole()
+{
+    system ("cls");
+    return;
+}
+
+void controlaFluxo()
+{
+    menuPrincipal();
+    while ((menu != CADASTRAR && menu != CONSULTAR && menu != SAIR) || menu == CONSULTAR && contpront == 0 || menu == CADASTRAR && loc > 2)
+    {
+        scanf("%d",&menu);
+        if (menu != CONSULTAR && menu != CADASTRAR)
+            printf("Opção inválida, digite novamente! \n");
+        else
+        {
+            if (menu == CONSULTAR)
+                printf("Não há prontuário armazenado! \n");
+            else
+                printf("Número máximo de prontuários ja cadastrados! \n");
+        }
+    }
+    limpaConsole();
+    defineMenu(menu);
+    return;
+}
+
+int defineMenu(int menu)
+{
+    switch (menu)
+    {
+    case CADASTRAR:
+        loc = loc+1;
+        cadastroProntuario();
+        limpaConsole();
+        anamnese();
+        limpaConsole();
+        procedimentos();
+        limpaConsole();
+        contpront = contpront + 1;
+        break;
+    case CONSULTAR:
+        consultarpront();
+        limpaConsole();
+        break;
+    case SAIR:
+        limpaConsole();
+        printf("\n-----PROGRAMA FINALIZADO-----");
+        break;
+    }
+    if (menu != SAIR)
+        controlaFluxo();
+    return;
+}
+
+void menuPrincipal()
 {
     printf("***************************************************\n");
     printf("\n        PRONTUÁRIO DIGITAL - CLÍNICA DENTO TECH ");
@@ -125,7 +139,7 @@ void menuprincipal()
     return;
 }
 
-void cadastroprontuario()
+void cadastroProntuario()
 {
     getchar();
     printf("-----CADASTRAR PRONTUÁRIO - DADOS PESSOAIS\n\n");
@@ -144,38 +158,39 @@ void anamnese()
 {
     printf("-----CADASTRAR PRONTUÁRIO - ANAMNESE\n\n");
     getchar();
-    printf("Está em tratamentos médico? "); fgets(pront[loc].anam.trat,4,stdin);   getchar();
-    printf("Está tomando medicamento? ");   fgets(pront[loc].anam.med,4,stdin);    getchar();
-    printf("É diabético? ");                fgets(pront[loc].anam.diab,4,stdin);   getchar();
-    printf("É hipertenso? ");               fgets(pront[loc].anam.hiper,4,stdin);  getchar();
-    printf("Tem tosse persistente? ");      fgets(pront[loc].anam.tosse,4,stdin);  getchar();
-    printf("Tem algum tipo de alergia? ");  fgets(pront[loc].anam.alergia,4,stdin);getchar();
+    printf("Está em tratamentos médico? (S/N) "); fgets(pront[loc].anam.trat,1,stdin);   getchar();
+    printf("Está tomando medicamento? (S/N) ");   fgets(pront[loc].anam.med,1,stdin);    getchar();
+    printf("É diabético? (S/N) ");                fgets(pront[loc].anam.diab,1,stdin);   getchar();
+    printf("É hipertenso? (S/N) ");               fgets(pront[loc].anam.hiper,1,stdin);  getchar();
+    printf("Tem tosse persistente? (S/N) ");      fgets(pront[loc].anam.tosse,1,stdin);  getchar();
+    printf("Tem algum tipo de alergia? (S/N) ");  fgets(pront[loc].anam.alergia,1,stdin);getchar();
     return;
 }
 
-void procedimento()
+void procedimentos()
 {
-    int pos,num,ndente,op,continua;
+    int pos, tipoProcedimento, ndente, op, continua;
 
 
     printf("-----CADASTRAR PRONTUÁRIO - PROCEDIMENTOS\n\n");
     printf("1- Obturação\n2- Extração\n\n");
-    goto again;
+
+    printf("\nQual procedimento deseja realizar: ");
+
+    while (tipoProcedimento != OBTURACAO && tipoProcedimento != EXTRACAO)
+    {
+        scanf("%d",&tipoProcedimento);
+        printf("Opção inválida, digite novamente! \n");
+	}
+
 
     opcao:
     printf("Deseja continuar? (1-sim, 2-não): ");
     scanf("%d",&op);
    	printf("*************************************************************");
     if (op==2)
-    	goto sai;
+    	controlaFluxo();
 
-    again:
-    printf("\nQual procedimento deseja realizar: "); scanf("%d",&num);
-    if (num<1 || num>2)
-    {
-    	printf("---Número do Procedimento Inválido!---\n");
-    	goto again;
-	}
 
   	infodente:
     printf("\nInforme o número do dente: ");         scanf("%d",&ndente);
@@ -196,7 +211,7 @@ void procedimento()
         	//goto again;
         	goto opcao;
         }
-        pront[loc].proced.dente[pos] = num;
+        pront[loc].proced.dente[pos] = tipoProcedimento;
     }
     else if (ndente>=21 && ndente<=28)
     {
@@ -207,7 +222,7 @@ void procedimento()
         	//goto again;
         	goto opcao;
         }
-        pront[loc].proced.dente[pos] = num;
+        pront[loc].proced.dente[pos] = tipoProcedimento;
     }
     else if (ndente>=31 && ndente<=38)
     {
@@ -218,7 +233,7 @@ void procedimento()
         	//goto again;
         	goto opcao;
         }
-        pront[loc].proced.dente[pos] = num;
+        pront[loc].proced.dente[pos] = tipoProcedimento;
     }
     else
     {
@@ -229,7 +244,7 @@ void procedimento()
         	//goto again;
         	goto opcao;
         }
-        pront[loc].proced.dente[pos] = num;
+        pront[loc].proced.dente[pos] = tipoProcedimento;
     }
     /*Fim da verificação de grupo*/
 	printf("*************************************************************");
@@ -240,7 +255,7 @@ void procedimento()
     switch (continua)
     {
     case 1:
-        goto again;
+        procedimentos();
         break;
 
     default:
@@ -250,6 +265,7 @@ void procedimento()
 	sai:
     return;
 }
+
 
 void consultarpront()
 {
@@ -269,20 +285,20 @@ void consultarpront()
     if (retorno==0)
     {
         cpfvalido = 0; //cpf ta declarado globalmente
-        system ("cls");
-        goto imprime;
+        limpaConsole();
+        imprimeDados();
     }
     else if (retorno1==0)
     {
         cpfvalido = 1; //cpf ta declarado globalmente
-        system ("cls");
-        goto imprime;
+        limpaConsole();
+        imprimeDados();
     }
     else if (retorno2==0)
     {
         cpfvalido = 2; //cpf ta declarado globalmente
-        system ("cls");
-        goto imprime;
+        limpaConsole();
+        imprimeDados();
     }
     else
     {
@@ -291,26 +307,22 @@ void consultarpront()
         scanf("%d",&continua);
         if (continua==1)
         {
-        	system ("cls");
+            limpaConsole();
         	goto volta;
     	}
         else
         	goto sai;
     }
 
-
-    imprime:
-    imprimedados();
-
     sai:
     return;
 }
 
-void imprimedados()
+void imprimeDados()
 {
     int i,continua;
     i = cpfvalido;
-    system("cls");
+    limpaConsole();
     printf("***************************************************************");
     printf("\n\n                        DADOS PESSOAIS"                          );
     printf("\n\n***************************************************************\n");
