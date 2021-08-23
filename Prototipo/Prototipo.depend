@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1629737748 source:c:\users\user\desktop\todas pastas\facul\1° semestre\programação em saúde\trabalho final codeblocks\prototipo\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<string.h>
+
