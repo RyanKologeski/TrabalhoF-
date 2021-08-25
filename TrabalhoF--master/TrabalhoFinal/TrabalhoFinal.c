@@ -16,6 +16,11 @@ void controlaFluxo();
 int defineMenu(int menu);
 void limpaConsole();
 
+
+void denteValido();
+void verificaContinuar();
+
+
 void menuPrincipal();
 void cadastroProntuario();
 void anamnese();
@@ -46,7 +51,13 @@ struct prontuario pront[cont];
 int cpfvalido=0;
 int encerra=0;
 int loc= -1;
-int i,j,menu,contpront=0;
+
+//tava dentro do main
+int i,j,menu,contpront=0, teste=1, teste2=1;
+
+//tava dentro do procedimentos
+int pos, tipoProcedimento, ndente, op, continua;
+
 
 
 int main ()
@@ -66,7 +77,8 @@ int main ()
 
     limpaConsole();
 
-    controlaFluxo();
+    while (teste == 1)
+        controlaFluxo();
 
     return 0;
 }
@@ -80,7 +92,7 @@ void limpaConsole()
 void controlaFluxo()
 {
     menuPrincipal();
-    while ((menu != CADASTRAR && menu != CONSULTAR && menu != SAIR) || menu == CONSULTAR && contpront == 0 || menu == CADASTRAR && loc > 2)
+    while ((menu != CADASTRAR && menu != CONSULTAR && menu != SAIR) || menu == CONSULTAR && loc == -1 || menu == CADASTRAR && loc > 2)
     {
         scanf("%d",&menu);
         if (menu != CONSULTAR && menu != CADASTRAR)
@@ -110,7 +122,6 @@ int defineMenu(int menu)
         limpaConsole();
         procedimentos();
         limpaConsole();
-        contpront = contpront + 1;
         break;
     case CONSULTAR:
         consultarpront();
@@ -121,8 +132,9 @@ int defineMenu(int menu)
         printf("\n-----PROGRAMA FINALIZADO-----");
         break;
     }
-    if (menu != SAIR)
-        controlaFluxo();
+    if (menu == SAIR)
+        teste = 0;
+        //controlaFluxo();
     return;
 }
 
@@ -169,84 +181,83 @@ void anamnese()
 
 void procedimentos()
 {
-    int pos, tipoProcedimento, ndente, op, continua;
-
 
     printf("-----CADASTRAR PRONTUÁRIO - PROCEDIMENTOS\n\n");
     printf("1- Obturação\n2- Extração\n\n");
-
     printf("\nQual procedimento deseja realizar: ");
 
-    while (tipoProcedimento != OBTURACAO && tipoProcedimento != EXTRACAO)
+    while (tipoProcedimento != 1 && tipoProcedimento != 2)
     {
         scanf("%d",&tipoProcedimento);
         printf("Opção inválida, digite novamente! \n");
 	}
 
 
-    opcao:
-    printf("Deseja continuar? (1-sim, 2-não): ");
-    scanf("%d",&op);
-   	printf("*************************************************************");
-    if (op==2)
-    	controlaFluxo();
+    printf("\nInforme o número do dente: ");
 
+    while (!(ndente >=11 && ndente <= 18) || !(ndente >=21 && ndente<=28) || !(ndente >= 31 && ndente <= 38) || !(ndente >= 41 && ndente <= 48))
+    {
+        scanf("%d",&ndente);
+        printf("Valor inválido, digite novamente! \n");
+    }
+    while (teste2 == 1)
+        denteValido();
 
-  	infodente:
-    printf("\nInforme o número do dente: ");         scanf("%d",&ndente);
+    return;
 
-    if (ndente>=11&&ndente<=18 || ndente>=21&&ndente<=28 || ndente>=31&&ndente<=38 || ndente>=41&&ndente<=48)
-        goto prox; //Se o número de dente informado for válido, vai para o próximo passo
-    else
-        goto infodente; //Se o número de dente informado for inválido, volta e pede para informar novamente
+}
 
+void denteValido()
+{
     /*Verifica em que grupo de dentes está e coloca o procedimento na posição correta*/
-    prox:
-    if (ndente>=11 && ndente<=18)
+    if (ndente >= 11 && ndente <= 18)
     {
-        pos = ndente -11;
-        if (pront[loc].proced.dente[pos]==2)
+        pos = ndente - 11;
+        if (pront[loc].proced.dente[pos] == 2)
         {
         	printf("---Dente já foi extraído!---\n\n");
-        	//goto again;
-        	goto opcao;
+        	verificaContinuar();
+        	if (op == 2)
+                return;
         }
         pront[loc].proced.dente[pos] = tipoProcedimento;
     }
-    else if (ndente>=21 && ndente<=28)
+    else if (ndente >= 21 && ndente <= 28)
     {
-        pos = ndente -13;
-        if (pront[loc].proced.dente[pos]==2)
+        pos = ndente - 13;
+        if (pront[loc].proced.dente[pos] == 2)
         {
         	printf("---Dente já foi extraído!---\n\n");
-        	//goto again;
-        	goto opcao;
+        	verificaContinuar();
+            if (op == 2)
+                return;
         }
         pront[loc].proced.dente[pos] = tipoProcedimento;
     }
-    else if (ndente>=31 && ndente<=38)
+    else if (ndente >= 31 && ndente <= 38)
     {
-        pos = ndente -15;
-        if (pront[loc].proced.dente[pos]==2)
+        pos = ndente - 15;
+        if (pront[loc].proced.dente[pos] == 2)
         {
         	printf("---Dente já foi extraído!---\n\n");
-        	//goto again;
-        	goto opcao;
+        	verificaContinuar();
+            if (op == 2)
+                return;
         }
         pront[loc].proced.dente[pos] = tipoProcedimento;
     }
     else
     {
-        pos = ndente -17;
-        if (pront[loc].proced.dente[pos]==2)
+        pos = ndente - 17;
+        if (pront[loc].proced.dente[pos] == 2)
         {
         	printf("---Dente já foi extraído!---\n\n");
-        	//goto again;
-        	goto opcao;
+        	verificaContinuar();
+            if (op == 2)
+                return;
         }
         pront[loc].proced.dente[pos] = tipoProcedimento;
-    }
-    /*Fim da verificação de grupo*/
+    }/*
 	printf("*************************************************************");
     printf("\nDeseja continuar? (1-sim, 2-não): ");
     scanf("%d",&continua);
@@ -259,11 +270,20 @@ void procedimentos()
         break;
 
     default:
-        break;
-    }
-
-	sai:
+        break;*/
     return;
+}
+
+void verificaContinuar()
+{
+    printf("Deseja continuar? (1-sim, 2-não): ");
+    while (op != 1 && op != 2)
+        scanf("%d",&op);
+    if (op==2)
+    {
+        teste2 =0;
+        return;
+    }
 }
 
 

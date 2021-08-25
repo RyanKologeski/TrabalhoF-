@@ -8,6 +8,9 @@
 #define SAIR 3
 #define OBTURACAO 1
 #define EXTRACAO 2
+#define SIM 1
+#define NAO 2
+
 
 void limpaconsole();
 void desejacontinuar();
@@ -42,11 +45,11 @@ struct prontuario
 struct prontuario pront[cont];
 
 int menu;
-int contpront=0;
 int cpfvalido=0;
 int encerra=0;
 int loc= 0;
 int avanca=0;
+int voltarmenu = 1;
 
 int main ()
 {
@@ -63,7 +66,14 @@ int main ()
     }
     /*Fim da inicialização do vetor*/
 
-    menuprincipal();
+    while (voltarmenu == 1)
+    {
+        menuprincipal();
+        menu = 0;
+        avanca = 0;
+        cpfvalido = 0;
+        limpaconsole();
+    }
 
 	limpaconsole();
 	printf("\n   -----PROGRAMA FINALIZADO-----");
@@ -80,21 +90,13 @@ void limpaconsole()
 void desejacontinuar()
 {
 	printf("Deseja continuar? (1-sim, 2-não): ");
-	scanf("%d",&avanca);
-
-	while (avanca<1 || avanca>2)
+	while(avanca != SIM && avanca != NAO)
 	{
-		printf("\n   ---Opção Inválida---\n");
-		printf("Deseja continuar? (1-sim, 2-não): ");
-		scanf("%d",&avanca);
-	}
-
-	switch (avanca)
-	{
-	case 2:
-		avanca=0;
-		limpaconsole();
-		menuprincipal();
+        scanf("%d",&avanca);
+        if (avanca != SIM && avanca != NAO)
+        {
+            printf("Opção Inválida! Tente novamente!\n");
+        }
 	}
 }
 
@@ -108,17 +110,24 @@ void menuprincipal()
     printf("\n1. Cadastrar prontuário\n2. Consultar prontuário\n3. Sair do sistema");
 
     printf("\n\nInforme a opção desejada: ");
-    scanf("%d",&menu);
 
-	{
-	    while (menu!=CADASTRAR && menu!=CONSULTAR && menu!=SAIR)
-	    {
-	        limpaconsole();
-	        printf("\n   ---OPÇÃO INVÁLIDA! INFORME NOVAMENTE.---\n\n");
-	        menuprincipal();
-	        scanf("%d",&menu);
-	    }
-	}
+    while ((menu != CADASTRAR && menu != CONSULTAR && menu != SAIR) || menu == CONSULTAR && loc == 0 || menu == CADASTRAR && loc > 2)
+    {
+        scanf("%d",&menu);
+        if (menu != CONSULTAR && menu != CADASTRAR)
+        {
+            printf("---OPÇÃO INVÁLIDA! INFORME NOVAMENTE.---\n");
+        }
+        else
+        {
+            if (menu == CADASTRAR && loc > 2)
+                printf("---Número máximo de prontuários ja cadastrados---\n");
+            if (menu == CONSULTAR && loc == 0)
+                printf("---Não há prontuário armazenado---\n");
+        }
+
+    }
+    limpaconsole();
 	escolha();
     return;
 }
@@ -128,42 +137,31 @@ void escolha()
 	switch (menu)
     {
     case 1:
-        if (loc>2)
-        {
-            limpaconsole();
-            printf("\n   ----------Número máximo de prontuários ja cadastrados----------\n\n");
-            menuprincipal();
-        }
-        limpaconsole();
         cadastroprontuario();
         limpaconsole();
         anamnese();
         limpaconsole();
-        procedimento();
-        limpaconsole();
-        contpront = contpront + 1;
-        menuprincipal();
-        break;
+        while (avanca != NAO)
+        {
+            avanca = 0;
+            procedimento();
+            limpaconsole();
+        }
+    break;
 
     case 2:
-        limpaconsole();
-        if (contpront==0)
+        while (avanca != NAO)
         {
-        	limpaconsole();
-            printf("\n   ----------Não há prontuário armazenado----------\n\n");
-            menuprincipal();
+            avanca = 0;
+            consultarpront();
+            limpaconsole();
         }
-        consultarpront();
-        if (encerra==0)
-        {
-        	limpaconsole();
-        	menuprincipal();
-        }
-        case 3:
-        	limpaconsole();
-        	printf("\n   -----PROGRAMA FINALIZADO-----");
-        	exit(0);
-        break;
+    break;
+
+    case 3:
+        printf("\n   -----PROGRAMA FINALIZADO-----");
+        exit(0);
+    break;
     }
 
     return;
@@ -199,33 +197,30 @@ void anamnese()
 
 void procedimento()
 {
-    int pos,num,ndente,op,continua;
+    int pos = 0, num = 0, ndente = 0, op = 0, continua = 0;
 
 
     printf("-----CADASTRAR PRONTUÁRIO - PROCEDIMENTOS\n\n");
     printf("1- Obturação\n2- Extração\n\n");
 
     printf("\nQual procedimento deseja realizar: ");
-	scanf("%d",&num);
 
-    if (num!=OBTURACAO && num!=EXTRACAO)
+    while (num!=OBTURACAO && num!=EXTRACAO)
     {
-    	limpaconsole();
-    	printf("   \n---Número do Procedimento Inválido!---\n\n");
-    	procedimento();
+        scanf("%d",&num);
+        if (num!=OBTURACAO && num!=EXTRACAO)
+            printf("Número do Procedimento Inválido!\n");
 	}
 
     printf("\nInforme o número do dente: ");
-	scanf("%d",&ndente);
 
-    if((ndente<11 || ndente>18) && (ndente<21 || ndente>28) && (ndente<31 || ndente>38) && (ndente<41 || ndente>48))
+    while ((ndente<11 || ndente>18) && (ndente<21 || ndente>28) && (ndente<31 || ndente>38) && (ndente<41 || ndente>48))
     {
-    	limpaconsole();
-    	printf("        \n-----Número de dente inválido!-----\n\n");
-    	procedimento();
+        scanf("%d",&ndente);
+        if ((ndente<11 || ndente>18) && (ndente<21 || ndente>28) && (ndente<31 || ndente>38) && (ndente<41 || ndente>48))
+            printf("Número de dente inválido!\n");
 	}
 
-    prox:
     if (ndente>=11 && ndente<=18)
     {
         pos = ndente -11;
@@ -234,8 +229,7 @@ void procedimento()
         	limpaconsole();
         	printf("\n   ---Dente já foi extraído!---\n\n");
         	desejacontinuar();
-        	limpaconsole();
-        	procedimento();
+            return;
         }
         pront[loc].proced.dente[pos] = num;
     }
@@ -247,8 +241,7 @@ void procedimento()
         	limpaconsole();
         	printf("\n   ---Dente já foi extraído!---\n\n");
         	desejacontinuar();
-        	limpaconsole();
-        	procedimento();
+        	return;
         }
         pront[loc].proced.dente[pos] = num;
     }
@@ -260,8 +253,7 @@ void procedimento()
         	limpaconsole();
         	printf("\n   ---Dente já foi extraído!---\n\n");
         	desejacontinuar();
-        	limpaconsole();
-        	procedimento();
+        	return;
         }
         pront[loc].proced.dente[pos] = num;
     }
@@ -273,33 +265,17 @@ void procedimento()
         	limpaconsole();
         	printf("\n   ---Dente já foi extraído!---\n\n");
         	desejacontinuar();
-        	limpaconsole();
-        	procedimento();
+        	return;
         }
         pront[loc].proced.dente[pos] = num;
     }
     /*Fim da verificação de grupo*/
 
-	printf("*************************************************************");
-    printf("\nDeseja continuar? (1-sim, 2-não): ");
-    scanf("%d",&continua);
-    printf("*************************************************************");
-
-    switch (continua)
+    desejacontinuar();
+    if (avanca == NAO)
     {
-    case 1:
-    	limpaconsole();
-    	procedimento();
-        break;
-
-    default:
-    	loc=loc+1;
-        break;
+        loc=loc+1;
     }
-
-	contpront=contpront+1;
-	limpaconsole();
-	menuprincipal();
 
     return;
 }
@@ -309,7 +285,6 @@ void consultarpront()
     int continua,retorno,retorno1,retorno2;
     char consulta[13];
 
-    volta:
     getchar();
     printf("-----CONSULTAR PRONTUÁRIO");
     printf("\n\nInforme o cpf do paciente: ");
@@ -340,8 +315,7 @@ void consultarpront()
     	limpaconsole();
     	printf("\n   ---CPF não cadastrado no sistema!---\n\n");
     	desejacontinuar();
-    	limpaconsole();
-    	consultarpront();
+    	return;
     }
 
     imprimedados();
@@ -351,7 +325,7 @@ void consultarpront()
 
 void imprimedados()
 {
-    int i,continua;
+    int i;
     i = cpfvalido;
     system("cls");
     printf("***************************************************************");
@@ -397,13 +371,9 @@ void imprimedados()
     printf("\nDente 28: %d          Dente 48: %d",pront[i].proced.dente[15],pront[i].proced.dente[31]);
 
     printf("\n\n*********************************************************************************************");
-    printf("\n\nDeseja ir para o Menu-Principal ou Encerrar o programa? (1-Menu, 2-Encerra): ");
-    scanf("%d",&continua);
-
-    if (continua==2)
-        encerra = 1;
-    else
-        encerra = 0;
+    printf("\n\nPressione alguma tecla para voltar ao menu principal");
+    getch();
+    avanca = NAO;
 
     return;
 }
