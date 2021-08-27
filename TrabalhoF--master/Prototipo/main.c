@@ -53,7 +53,7 @@ int voltarmenu = 1;
 
 int main ()
 {
-    setlocale (LC_ALL,"Portuguese");
+    setlocale(LC_ALL,"Portuguese");
     int i,j;
 
     /*Inicializa o vetor dente com 0*/
@@ -196,22 +196,22 @@ void anamnese()
 {
     printf("-----CADASTRAR PRONTUÁRIO - ANAMNESE\n\n");
     getchar();
-    printf("Está em tratamentos médico? (Sim/Não) ");
+    printf("Está em tratamentos médico? (Sim/Nao) ");
     fgets(pront[loc].anam.trat,4,stdin);
     getchar();
-    printf("Está tomando medicamento? (Sim/Não) ");
+    printf("Está tomando medicamento? (Sim/Nao) ");
     fgets(pront[loc].anam.med,4,stdin);
     getchar();
-    printf("É diabético? (Sim/Não) ");
+    printf("É diabético? (Sim/Nao) ");
     fgets(pront[loc].anam.diab,4,stdin);
     getchar();
-    printf("É hipertenso? (Sim/Não) ");
+    printf("É hipertenso? (Sim/Nao) ");
     fgets(pront[loc].anam.hiper,4,stdin);
     getchar();
-    printf("Tem tosse persistente? (Sim/Não) ");
+    printf("Tem tosse persistente? (Sim/Nao) ");
     fgets(pront[loc].anam.tosse,4,stdin);
     getchar();
-    printf("Tem algum tipo de alergia? (Sim/Não) ");
+    printf("Tem algum tipo de alergia? (Sim/Nao) ");
     fgets(pront[loc].anam.alergia,4,stdin);
     getchar();
     return;
