@@ -22,9 +22,8 @@ void procedimento();
 
 void consultarpront();
 void imprimedados();
-void imprimedados1();
-void imprimedados2();
 
+//Inicialização das Struct
 struct anamnese
 {
     char trat[4],med[4],diab[4],hiper[4],tosse[4],alergia[4];
@@ -41,12 +40,13 @@ struct prontuario
     struct anamnese anam;
     struct procedimento proced;
 };
+//Fim da inicialização das Struct
 
-struct prontuario pront[cont];
+struct prontuario pront[cont]; //Struct pront recebe 3 posições
 
+//Variáveis globais
 int menu;
 int cpfvalido=0;
-int encerra=0;
 int loc= 0;
 int avanca=0;
 int voltarmenu = 1;
@@ -57,9 +57,9 @@ int main ()
     int i,j;
 
     /*Inicializa o vetor dente com 0*/
-    for (i=0;i<cont;i++)
+    for (i=0; i<cont; i++)
     {
-        for (j=0;j<32;j++)
+        for (j=0; j<32; j++)
         {
             pront[i].proced.dente[j] = 0;
         }
@@ -75,31 +75,31 @@ int main ()
         limpaconsole();
     }
 
-	limpaconsole();
-	printf("\n   -----PROGRAMA FINALIZADO-----");
+    limpaconsole();
+    printf("\n   -----PROGRAMA FINALIZADO-----");
 
     return 0;
 }
 
-void limpaconsole()
+void limpaconsole() //Função para limpar a tela
 {
-	system("cls");
-	return;
+    system("cls");
+    return;
 }
 
-void desejacontinuar()
+void desejacontinuar() //Função utilizada quando necessita fazer leitura se o usuário deseja continuar
 {
-	printf("Deseja continuar? (1-sim, 2-não): ");
-	while(avanca != SIM && avanca != NAO)
-	{
+    printf("Deseja continuar? (1-sim, 2-não): ");
+    while(avanca != SIM && avanca != NAO)
+    {
         scanf("%d",&avanca);
         if (avanca != SIM && avanca != NAO)
         {
             printf("Opção Inválida! Tente novamente!\n");
         }
-	}
+    }
 }
-
+//Início da função menuprincipal
 void menuprincipal()
 {
     printf("***************************************************\n");
@@ -111,6 +111,7 @@ void menuprincipal()
 
     printf("\n\nInforme a opção desejada: ");
 
+    //Realiza a leitura da opção enquanto está for diferente de 1, 2 ou 3
     while ((menu != CADASTRAR && menu != CONSULTAR && menu != SAIR) || menu == CONSULTAR && loc == 0 || menu == CADASTRAR && loc > 2)
     {
         scanf("%d",&menu);
@@ -118,23 +119,23 @@ void menuprincipal()
         {
             printf("---OPÇÃO INVÁLIDA! INFORME NOVAMENTE.---\n");
         }
-        else
+        else //Caso a opção de cadastro tenha sido escolhida...
         {
-            if (menu == CADASTRAR && loc > 2)
+            if (menu == CADASTRAR && loc > 2) //Testa se já foi realizado o cadastro de 3 prontuários
                 printf("---Número máximo de prontuários ja cadastrados---\n");
-            if (menu == CONSULTAR && loc == 0)
+            if (menu == CONSULTAR && loc == 0) //Testa se há prontuário armazenado
                 printf("---Não há prontuário armazenado---\n");
         }
 
     }
     limpaconsole();
-	escolha();
+    escolha();
     return;
 }
-
+//Início da função que realiza a leitura da opção escolhida no menu principal
 void escolha()
 {
-	switch (menu)
+    switch (menu)
     {
     case 1:
         cadastroprontuario();
@@ -147,7 +148,7 @@ void escolha()
             procedimento();
             limpaconsole();
         }
-    break;
+        break;
 
     case 2:
         while (avanca != NAO)
@@ -156,45 +157,66 @@ void escolha()
             consultarpront();
             limpaconsole();
         }
-    break;
+        break;
 
     case 3:
         printf("\n   -----PROGRAMA FINALIZADO-----");
         exit(0);
-    break;
+        break;
     }
 
     return;
 }
-
+//Função de cadastro de prontuário
 void cadastroprontuario()
 {
     getchar();
     printf("-----CADASTRAR PRONTUÁRIO - DADOS PESSOAIS\n\n");
-    printf("1. id prontuário: ");                    fgets(pront[loc].id,10,stdin);
-    printf("2. cpf do paciente (xxxxxxxxx-xx): ");   fgets(pront[loc].cpf,13,stdin);       getchar();
-    printf("3. nome do paciente: ");                 fgets(pront[loc].nome,50,stdin);
-    printf("4. endereço: ");                         fgets(pront[loc].endereco,40,stdin);
-    printf("5. bairro: ");                           fgets(pront[loc].bairro,30,stdin);
-    printf("6. cidade: ");                           fgets(pront[loc].cidade,30,stdin);
-    printf("7. Estado: ");                           fgets(pront[loc].estado,30,stdin);
-    printf("8. ano de nascimento: ");                fgets(pront[loc].nasc,5,stdin);
+    printf("1. id prontuário: ");
+    fgets(pront[loc].id,10,stdin);
+    printf("2. cpf do paciente (xxxxxxxxx-xx): ");
+    fgets(pront[loc].cpf,13,stdin);
+    getchar();
+    printf("3. nome do paciente: ");
+    fgets(pront[loc].nome,50,stdin);
+    printf("4. endereço: ");
+    fgets(pront[loc].endereco,40,stdin);
+    printf("5. bairro: ");
+    fgets(pront[loc].bairro,30,stdin);
+    printf("6. cidade: ");
+    fgets(pront[loc].cidade,30,stdin);
+    printf("7. Estado: ");
+    fgets(pront[loc].estado,30,stdin);
+    printf("8. ano de nascimento: ");
+    fgets(pront[loc].nasc,5,stdin);
     return;
 }
-
+//Função da coleta da anamnese
 void anamnese()
 {
     printf("-----CADASTRAR PRONTUÁRIO - ANAMNESE\n\n");
     getchar();
-    printf("Está em tratamentos médico? (Sim/Não) "); fgets(pront[loc].anam.trat,4,stdin);   getchar();
-    printf("Está tomando medicamento? (Sim/Não) ");   fgets(pront[loc].anam.med,4,stdin);    getchar();
-    printf("É diabético? (Sim/Não) ");                fgets(pront[loc].anam.diab,4,stdin);   getchar();
-    printf("É hipertenso? (Sim/Não) ");               fgets(pront[loc].anam.hiper,4,stdin);  getchar();
-    printf("Tem tosse persistente? (Sim/Não) ");      fgets(pront[loc].anam.tosse,4,stdin);  getchar();
-    printf("Tem algum tipo de alergia? (Sim/Não) ");  fgets(pront[loc].anam.alergia,4,stdin);getchar();
+    printf("Está em tratamentos médico? (Sim/Não) ");
+    fgets(pront[loc].anam.trat,4,stdin);
+    getchar();
+    printf("Está tomando medicamento? (Sim/Não) ");
+    fgets(pront[loc].anam.med,4,stdin);
+    getchar();
+    printf("É diabético? (Sim/Não) ");
+    fgets(pront[loc].anam.diab,4,stdin);
+    getchar();
+    printf("É hipertenso? (Sim/Não) ");
+    fgets(pront[loc].anam.hiper,4,stdin);
+    getchar();
+    printf("Tem tosse persistente? (Sim/Não) ");
+    fgets(pront[loc].anam.tosse,4,stdin);
+    getchar();
+    printf("Tem algum tipo de alergia? (Sim/Não) ");
+    fgets(pront[loc].anam.alergia,4,stdin);
+    getchar();
     return;
 }
-
+//Função de procedimentos realizados
 void procedimento()
 {
     int pos = 0, num = 0, ndente = 0, op = 0, continua = 0;
@@ -205,72 +227,100 @@ void procedimento()
 
     printf("\nQual procedimento deseja realizar: ");
 
+    //Enquanto opção escolhida for diferente de 1 ou 2...
     while (num!=OBTURACAO && num!=EXTRACAO)
     {
         scanf("%d",&num);
         if (num!=OBTURACAO && num!=EXTRACAO)
             printf("Número do Procedimento Inválido!\n");
-	}
+    }
 
     printf("\nInforme o número do dente: ");
 
+    //Testa se o número do dente informado é válido
     while ((ndente<11 || ndente>18) && (ndente<21 || ndente>28) && (ndente<31 || ndente>38) && (ndente<41 || ndente>48))
     {
         scanf("%d",&ndente);
         if ((ndente<11 || ndente>18) && (ndente<21 || ndente>28) && (ndente<31 || ndente>38) && (ndente<41 || ndente>48))
             printf("Número de dente inválido!\n");
-	}
-
+    }
+    //Número do dente de 11 a 18
     if (ndente>=11 && ndente<=18)
     {
+        //Posição que o procedimento vai ser guardado dentro do vetor "dente" é igual
+        //ao número do dente informado menos 11
         pos = ndente -11;
         if (pront[loc].proced.dente[pos]==2)
         {
-        	limpaconsole();
-        	printf("\n   ---Dente já foi extraído!---\n\n");
-        	desejacontinuar();
+            limpaconsole();
+            printf("\n   ---Dente já foi extraído!---\n\n");
+            desejacontinuar();
+            if (avanca == NAO)
+            {
+                loc=loc+1;
+            }
             return;
         }
         pront[loc].proced.dente[pos] = num;
     }
+    //Número do dente de 21 a 28
     else if (ndente>=21 && ndente<=28)
     {
+        //Posição que o procedimento vai ser guardado dentro do vetor "dente" é igual
+        //ao número do dente informado menos 13
         pos = ndente -13;
         if (pront[loc].proced.dente[pos]==2)
         {
-        	limpaconsole();
-        	printf("\n   ---Dente já foi extraído!---\n\n");
-        	desejacontinuar();
-        	return;
+            limpaconsole();
+            printf("\n   ---Dente já foi extraído!---\n\n");
+            desejacontinuar();
+            if (avanca == NAO)
+            {
+                loc=loc+1;
+            }
+            return;
         }
         pront[loc].proced.dente[pos] = num;
     }
+    //Número do dente de 31 a 38
     else if (ndente>=31 && ndente<=38)
     {
+        //Posição que o procedimento vai ser guardado dentro do vetor "dente" é igual
+        //ao número do dente informado menos 15
         pos = ndente -15;
         if (pront[loc].proced.dente[pos]==2)
         {
-        	limpaconsole();
-        	printf("\n   ---Dente já foi extraído!---\n\n");
-        	desejacontinuar();
-        	return;
+            limpaconsole();
+            printf("\n   ---Dente já foi extraído!---\n\n");
+            desejacontinuar();
+            if (avanca == NAO)
+            {
+                loc=loc+1;
+            }
+            return;
         }
         pront[loc].proced.dente[pos] = num;
     }
+    //Número do dente de 41 a 48
     else
     {
+        //Posição que o procedimento vai ser guardado dentro do vetor "dente" é igual
+        //ao número do dente informado menos 17
         pos = ndente -17;
         if (pront[loc].proced.dente[pos]==2)
         {
-        	limpaconsole();
-        	printf("\n   ---Dente já foi extraído!---\n\n");
-        	desejacontinuar();
-        	return;
+            limpaconsole();
+            printf("\n   ---Dente já foi extraído!---\n\n");
+            desejacontinuar();
+            if (avanca == NAO)
+            {
+                loc=loc+1;
+            }
+            return;
         }
         pront[loc].proced.dente[pos] = num;
     }
-    /*Fim da verificação de grupo*/
-
+    //Lê se o usuário deseja continuar realizando procedimentos
     desejacontinuar();
     if (avanca == NAO)
     {
@@ -279,7 +329,7 @@ void procedimento()
 
     return;
 }
-
+//Função para consultar prontuário
 void consultarpront()
 {
     int continua,retorno,retorno1,retorno2;
@@ -293,11 +343,11 @@ void consultarpront()
     retorno  = strcmp(pront[0].cpf, consulta);
     retorno1 = strcmp(pront[1].cpf, consulta);
     retorno2 = strcmp(pront[2].cpf, consulta);
-
+    //Se algum dos retornos acima for igual a zero...
     if (retorno==0)
     {
         cpfvalido = 0; //cpf ta declarado globalmente
-    	limpaconsole();
+        limpaconsole();
     }
     else if (retorno1==0)
     {
@@ -309,24 +359,24 @@ void consultarpront()
         cpfvalido = 2; //cpf ta declarado globalmente
         limpaconsole();
     }
-
+    //Se nenhum dos retornos for igual a zero, cpf inválido
     if (retorno!=0 && retorno1!=0 && retorno2!=0)
     {
-    	limpaconsole();
-    	printf("\n   ---CPF não cadastrado no sistema!---\n\n");
-    	desejacontinuar();
-    	return;
+        limpaconsole();
+        printf("\n   ---CPF não cadastrado no sistema!---\n\n");
+        desejacontinuar();
+        return;
     }
 
     imprimedados();
 
     return;
 }
-
+//Imprime o prontuário lido a partir do cpf
 void imprimedados()
 {
     int i;
-    i = cpfvalido;
+    i = cpfvalido; //i é igual a cpf válido, esse que recebeu valor na função consultarpront
     system("cls");
     printf("***************************************************************");
     printf("\n\n                        DADOS PESSOAIS"                          );
@@ -340,7 +390,7 @@ void imprimedados()
     printf("\n7. Estado: %s",pront[i].estado);
     printf("\n8. ano de nascimento: %s",pront[i].nasc);
 
-	printf("\n\n***************************************************************");
+    printf("\n\n***************************************************************");
     printf("\n\n                          ANAMNESE"                              );
     printf("\n\n***************************************************************\n");
     printf("\n\nEstá em tratamento médico?         -%s",pront[i].anam.trat);
