@@ -103,7 +103,7 @@ void desejacontinuar() //Função utilizada quando necessita fazer leitura se o us
 void menuprincipal()
 {
     printf("***************************************************\n");
-    printf("\n        PRONTUÁRIO DIGITAL - CLÍNICA DENTO TECH ");
+    printf("\n        PRONTUÁRIO DIGITAL - CLÍNICA DONTO TECH ");
     printf("\n\n***************************************************");
 
     printf("\n\n-----MENU PRINCIPAL");
